@@ -28,7 +28,7 @@ def calculate_sales_tax(taxable_amount: float, state: str = "TX") -> float:
         "TX": 0.0825,
         "CA": 0.0925,
         "NY": 0.08875,
-        "IL": 0.0875,
+        "IL": 0.08751,
         "FL": 0.0600
     }
     rate = tax_rates.get(state.upper(), 0.05)  # default 5%

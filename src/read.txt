@@ -1,0 +1,20 @@
+┌─────────────────────────┬─────────────────────────┬──────────────────────────┬─────────────────────────────────┐
+│ Phase 1: Working Tree   │ Phase 2: Staging Area   │ Phase 3: Local Repo      │ Phase 4: Remote (GitHub)        │
+├─────────────────────────┼─────────────────────────┼──────────────────────────┼─────────────────────────────────┤
+│ Where files are edited  │ Where snapshot is prepped│ Where snapshot is stored │ Where team & CI/CD access it    │
+│ Purely uncommitted disk │ Cached in .git/index    │ Permanent commit node    │ Live in the cloud               │
+│ git restore <file>      │ git restore --staged    │ git reset --soft HEAD~1  │ git revert <hash>               │
+│ ⚠️ Loss if discarded    │ 🟢 100% Safe to unstage │ 🟢 Safe to amend or roll │ ⚠️ Requires team consideration   │
+│ No network needed       │ No network needed       │ No network needed        │ Requires network connection     │
+└─────────────────────────┴─────────────────────────┴──────────────────────────┴─────────────────────────────────┘
+
+┌─────────────────────┬─────────────────────┬──────────────────────────┬───────────────────────────────────┐
+│ 1. Setup            │ 2. Branching        │ 3. Rebasing              │ 4. Conflict Resolution            │
+├─────────────────────┼─────────────────────┼─────────────────────────┼───────────────────────────────────┤
+│ Git identities      │ isolate work        │ linearize commit history │ merge divergent lines             │
+│ global config        │ git branch feature │ git rebase main          │ manual edits + git add + commit   │
+│ local init          │ git checkout        │ ⚠️ requires clean tree  │ ❌ no partial commits allowed      │
+│ .gitignore          │ git merge           │ ⚠️ no remote push yet    │ Git marks conflicting lines with  │
+│                     │                     │                          │ <<<<<<< and >>>>>>> markers         │
+└─────────────────────┴─────────────────────┴──────────────────────────┴───────────────────────────────────┘
+applications of git

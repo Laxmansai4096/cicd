@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.retail_calc import (
     calculate_subtotal,
     apply_discount,
+    apply_bulk_discount,
     calculate_sales_tax,
     calculate_final_total
 )
@@ -22,6 +23,9 @@ class TestRetailCalculator(unittest.TestCase):
         self.sample_items = [
             {"sku": "SKU-001", "name": "Wireless Headphones", "price": 100.00, "quantity": 1},
             {"sku": "SKU-002", "name": "USB-C Cable", "price": 20.00, "quantity": 2}
+        ]
+        self.bulk_items = [
+            {"sku": "SKU-003", "name": "Keycaps Set", "price": 10.00, "quantity": 10}
         ]
 
     def test_subtotal_calculation(self):
@@ -41,6 +45,12 @@ class TestRetailCalculator(unittest.TestCase):
         discounted = apply_discount(100.00, "INVALID_CODE")
         self.assertEqual(discounted, 100.00)
 
+    def test_bulk_volume_discount_applied(self):
+        # 10 items * $10.00 = $100.00 -> 15% bulk discount = $85.00
+        net, savings = apply_bulk_discount(self.bulk_items, 100.00)
+        self.assertEqual(net, 85.00)
+        self.assertEqual(savings, 15.00)
+
     def test_sales_tax_tx(self):
         # 100 * 0.0825 = 8.25
         tax = calculate_sales_tax(100.00, "TX")
@@ -53,7 +63,7 @@ class TestRetailCalculator(unittest.TestCase):
         # Tax in TX: 126.00 * 0.0825 = 10.40
         # Total: 126.00 + 10.40 = 136.40
         self.assertEqual(result["subtotal"], 140.00)
-        self.assertEqual(result["discount_savings"], 14.00)
+        self.assertEqual(result["promo_savings"], 14.00)
         self.assertEqual(result["sales_tax"], 10.40)
         self.assertEqual(result["final_total"], 136.40)
 

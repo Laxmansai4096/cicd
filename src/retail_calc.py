@@ -3,6 +3,12 @@ Retail Checkout & Pricing Calculation Engine
 Core business logic for order totals, promotional discounts, and sales tax.
 """
 
+VALID_PROMO_CODES = {
+    "WELCOME10": 0.10,
+    "VIP20": 0.20,
+    "FLASH50": 0.50
+}
+
 def calculate_subtotal(items: list) -> float:
     """Calculate the gross subtotal of cart items."""
     if not items:
@@ -12,15 +18,7 @@ def calculate_subtotal(items: list) -> float:
 def apply_discount(subtotal: float, promo_code: str = "") -> float:
     """Apply promotional coupons to the subtotal."""
     clean_code = (promo_code or "").strip().upper()
-    discount_rate = 0.0
-    
-    if clean_code == "WELCOME10":
-        discount_rate = 0.10
-    elif clean_code == "VIP20":
-        discount_rate = 0.20
-    elif clean_code == "FLASH50":
-        discount_rate = 0.50
-        
+    discount_rate = VALID_PROMO_CODES.get(clean_code, 0.0)
     discount_amount = round(subtotal * discount_rate, 2)
     return round(subtotal - discount_amount, 2)
 
